@@ -20,14 +20,18 @@ router.post('/register', (req, res) => {
 // LOGIN
 router.post('/login', (req, res) => {
   let { user_name, password } = req.body;
-  console.log(user_name);
+
   Users.findBy({ user_name })
     .first()
     .then(user => {
       if (user && bc.compareSync(password, user.password)) {
-        res.status(200).json({ message: `Welcome ${user.user_name}!` });
+        req.session.loggedIn = true;
+        req.session.userId = user.id;
+        res
+          .status(200)
+          .json({ message: `Welcome ${user.user_name}, You are logged in` });
       } else {
-        res.status(401).json({ message: 'Invalid Credentials' });
+        res.status(401).json({ message: 'You Shall Not Pass!' });
       }
     })
     .catch(error => {

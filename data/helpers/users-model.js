@@ -12,14 +12,14 @@ function find() {
 }
 
 function findBy(filter) {
-  return db('users')
-    .select('id', 'user_name', 'password')
+  return db('users as u')
+    .select('u.id', 'u.user_name', 'u.password')
     .where(filter);
 }
 
 function findById(id) {
-  return db('users')
-    .select('id', 'user_name')
+  return db('users as u')
+    .select('u.id', 'u.user_name')
     .where({ id })
     .first();
 }
